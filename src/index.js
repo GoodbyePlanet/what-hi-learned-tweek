@@ -1,11 +1,13 @@
 const express = require('express');
 const { notFound, errorHandler } = require('./middlewares');
 
+require('dotenv').config();
+
 const app = express();
 
 // TODO: Check HELMET => https://www.npmjs.com/package/helmet
 
-const PORT = process.env.PORT || 3001;
+const PORT = process.env.PORT || 3112;
 
 app.get('/', (_, res) => {
   res.json({ message: 'THIS IS THE INITAL ROUTE' });
