@@ -4,12 +4,16 @@
   "description": "This is a starter kit for working with MongoDB, NodeJS and GraphQL",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node src/index.js",
+    "dev": "nodemon src/index.js",
+    "lint": "eslint src/"
   },
   "author": "GoodbyePlanet",
   "license": "ISC",
   "devDependencies": {
     "eslint": "^6.8.0",
+    "eslint-config-airbnb-base": "^14.0.0",
+    "eslint-plugin-import": "^2.20.1",
     "nodemon": "^2.0.2"
   }
 }
