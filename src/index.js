@@ -16,4 +16,6 @@ app.get('/', async (_, res) => {
 app.use(notFound);
 app.use(errorHandler);
 
-app.listen(PORT, () => console.log(`Listening at http://localhost:${PORT}`));
+db.connection.on('connected', () => {
+  app.listen(PORT, () => console.log(`Listening at http://localhost:${PORT}`));
+});
