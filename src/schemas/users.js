@@ -8,9 +8,21 @@ const userSchema = `
     age: Int
   }
 
+  input UserInput {
+    email: String!,
+    nickName: String,
+    firstName: String,
+    lastName: String,
+    age: Int
+  }
+
   type Query {
     getUsers: [User]
     getUserById(id: ID!): User
+  }
+
+  type Mutation {
+    createUser(input: UserInput!): User
   }
 `;
 
