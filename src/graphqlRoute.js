@@ -1,30 +1,19 @@
 const { ApolloServer, gql } = require('apollo-server-express');
+const {
+  fileLoader,
+  mergeTypes,
+  mergeResolvers,
+} = require('merge-graphql-schemas');
+const path = require('path');
 
-const typeDefs = gql`
-  type User {
-    nickName: String!
-    firstName: String!
-    lastName: String!
-    age: Int
-  }
+// fileLoader is function for importing all files from specified folder
+// path.join(__dirname, './schemas')
+///Users/nemanjavasic/Documents/NODEJS/mongodb-nodejs-graphql-starter-kit/src/schemas
 
-  type Query {
-    getUsers: [User]
-  }
-`;
-
-const resolvers = {
-  Query: {
-    getUsers: () => [
-      {
-        nickName: 'Nemanjas',
-        firstName: 'Nemanja',
-        lastName: 'Vasic',
-        age: 27,
-      },
-    ],
-  },
-};
+const typeDefs = mergeTypes(fileLoader(path.join(__dirname, './schemas')));
+const resolvers = mergeResolvers(
+  fileLoader(path.join(__dirname, './resolvers')),
+);
 
 const apolloServer = new ApolloServer({ typeDefs, resolvers });
 
