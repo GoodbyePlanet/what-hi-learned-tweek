@@ -3,6 +3,7 @@ const {
   getUserById,
   createUser,
   updateUser,
+  deleteUser,
 } = require('../db-actions/users');
 
 const userResolvers = {
@@ -13,6 +14,7 @@ const userResolvers = {
   Mutation: {
     createUser: (_, { input: userData }) => createUser(userData),
     updateUser: (_, { id, input: updatedUser }) => updateUser(id, updatedUser),
+    deleteUser: (_, { id }) => deleteUser(id),
   },
 };
 
