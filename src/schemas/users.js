@@ -19,6 +19,7 @@ const userSchema = `
   type Query {
     getUsers: [User]
     getUserById(id: ID!): User
+    findUserByEmail(email: String!): User
   }
 
   type Mutation {

@@ -6,6 +6,11 @@ const getUsers = async () =>
 const getUserById = async id =>
   await User.findById(id).orFail(new Error(`User with ${id} not found!`));
 
+const findUserByEmail = async email =>
+  await User.find()
+    .byEmail(email)
+    .orFail(new Error(`no user with provided ${email} email!`));
+
 const createUser = async userData => await new User(userData).save();
 
 const updateUser = async (id, updatedUser) =>
@@ -25,4 +30,11 @@ const deleteUser = async id =>
     ? id
     : new Error(`Delete failed, ${id} not found!`);
 
-module.exports = { getUsers, getUserById, createUser, updateUser, deleteUser };
+module.exports = {
+  getUsers,
+  getUserById,
+  createUser,
+  updateUser,
+  deleteUser,
+  findUserByEmail,
+};

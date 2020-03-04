@@ -31,6 +31,10 @@ userSchema.methods.validPassword = function(password) {
   return bcrypt.compareSync(password, this.password);
 };
 
+userSchema.query.byEmail = function(email) {
+  return this.where({ email });
+};
+
 const User = mongoose.model('User', userSchema);
 
 module.exports = User;
