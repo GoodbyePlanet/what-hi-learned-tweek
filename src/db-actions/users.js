@@ -28,15 +28,13 @@ const deleteUser = async id =>
     : new Error(`Delete failed, ${id} not found!`);
 
 const register = async userData => {
-  const userExists = await findUserByEmail(userData.email);
-
-  if (userExists.length) {
+  if (await findUserByEmail(userData.email).length) {
     throw Error(`User with ${userData.email} already exists!`);
   }
 
   return await createUser({
     ...userData,
-    password: User.generateHash(userData.password),
+    password: userData.password,
   });
 };
 

@@ -3,6 +3,7 @@ const mongoose = require('mongoose');
 const { Schema } = mongoose;
 const IsEmail = require('isemail');
 const bcrypt = require('bcrypt');
+const { isLongEnough, isStrongEnough } = require('../validation/password');
 
 const SALT_WORK_FACTOR = 10;
 
@@ -34,6 +35,18 @@ userSchema.methods.validPassword = function(password) {
 userSchema.query.byEmail = function(email) {
   return this.where({ email });
 };
+
+userSchema.path('password').validate(function(password) {
+  return isLongEnough(password) && isStrongEnough(password);
+});
+
+userSchema.pre('save', function(next) {
+  this.password = bcrypt.hashSync(
+    this.password,
+    bcrypt.genSaltSync(SALT_WORK_FACTOR),
+  );
+  next();
+});
 
 const User = mongoose.model('User', userSchema);
 
