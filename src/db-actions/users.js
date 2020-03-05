@@ -6,10 +6,7 @@ const getUsers = async () =>
 const getUserById = async id =>
   await User.findById(id).orFail(new Error(`User with ${id} not found!`));
 
-const findUserByEmail = async email =>
-  await User.find()
-    .byEmail(email)
-    .orFail(new Error(`no user with provided ${email} email!`));
+const findUserByEmail = async email => await User.find().byEmail(email);
 
 const createUser = async userData => await new User(userData).save();
 
@@ -30,6 +27,19 @@ const deleteUser = async id =>
     ? id
     : new Error(`Delete failed, ${id} not found!`);
 
+const register = async userData => {
+  const userExists = await findUserByEmail(userData.email);
+
+  if (userExists.length) {
+    throw Error(`User with ${userData.email} already exists!`);
+  }
+
+  return await createUser({
+    ...userData,
+    password: User.generateHash(userData.password),
+  });
+};
+
 module.exports = {
   getUsers,
   getUserById,
@@ -37,4 +47,5 @@ module.exports = {
   updateUser,
   deleteUser,
   findUserByEmail,
+  register,
 };

@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 
 const { Schema } = mongoose;
-const isemail = require('isemail');
+const IsEmail = require('isemail');
 const bcrypt = require('bcrypt');
 
 const SALT_WORK_FACTOR = 10;
@@ -10,7 +10,7 @@ const userSchema = new Schema({
   email: {
     type: String,
     validate: {
-      validator: email => isemail(email),
+      validator: email => IsEmail.validate(email),
       message: 'Email is not valid',
     },
     required: true,
