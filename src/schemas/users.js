@@ -24,7 +24,6 @@ const userSchema = `
 
   type Mutation {
     signUp(password: String!, input: UserInput!): User
-    createUser(input: UserInput!): User
     updateUser(id: ID!, input: UserInput!): User
     deleteUser(id: ID!): String
   }

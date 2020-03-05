@@ -1,7 +1,6 @@
 const {
   getUsers,
   getUserById,
-  createUser,
   updateUser,
   deleteUser,
   findUserByEmail,
@@ -17,7 +16,6 @@ const userResolvers = {
   Mutation: {
     signUp: (_, { password, input: userData }) =>
       register({ ...userData, password }),
-    createUser: (_, { input: userData }) => createUser(userData),
     updateUser: (_, { id, input: updatedUser }) => updateUser(id, updatedUser),
     deleteUser: (_, { id }) => deleteUser(id),
   },
