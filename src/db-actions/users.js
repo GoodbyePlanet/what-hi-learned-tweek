@@ -1,4 +1,6 @@
 const User = require('../models/User');
+const jwt = require('jsonwebtoken');
+const config = require('../../config');
 
 const getUsers = async () =>
   await User.find({}).orFail(new Error('No documents found'));
@@ -6,7 +8,7 @@ const getUsers = async () =>
 const getUserById = async id =>
   await User.findById(id).orFail(new Error(`User with ${id} not found!`));
 
-const findUserByEmail = async email => await User.find().byEmail(email);
+const findUserByEmail = async email => await User.findOne({ email });
 
 const createUser = async userData => await new User(userData).save();
 
@@ -28,13 +30,35 @@ const deleteUser = async id =>
     : new Error(`Delete failed, ${id} not found!`);
 
 const register = async userData => {
-  if (await findUserByEmail(userData.email).length) {
-    throw Error(`User with ${userData.email} already exists!`);
+  if (await findUserByEmail(userData.email)) {
+    throw Error(`User with email: ${userData.email} already exists!`);
   }
 
   return await createUser({
     ...userData,
     password: userData.password,
+  });
+};
+
+const login = async (email, password) => {
+  const user = await findUserByEmail(email);
+  const validPassword = user && (await user.isValidPassword(password));
+
+  if (user && validPassword) {
+    return { user, token: generateAuthToken(user), errors: null };
+  }
+
+  return {
+    errors: {
+      email: !user ? 'Email is not valid!' : null,
+      password: user && !validPassword ? 'Password is not valid!' : null,
+    },
+  };
+};
+
+const generateAuthToken = user => {
+  return jwt.sign({ id: user._id }, config.AUTH_SECRET, {
+    expiresIn: 86400, // in 24 hours
   });
 };
 
@@ -46,4 +70,5 @@ module.exports = {
   deleteUser,
   findUserByEmail,
   register,
+  login,
 };
