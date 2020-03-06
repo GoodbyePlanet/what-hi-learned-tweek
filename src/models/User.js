@@ -28,12 +28,8 @@ userSchema.statics.generateHash = function(password) {
   return bcrypt.hashSync(password, salt);
 };
 
-userSchema.methods.validPassword = function(password) {
+userSchema.methods.isValidPassword = async function(password) {
   return bcrypt.compareSync(password, this.password);
-};
-
-userSchema.query.byEmail = function(email) {
-  return this.where({ email });
 };
 
 userSchema.path('password').validate(function(password) {
