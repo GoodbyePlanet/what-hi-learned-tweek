@@ -8,6 +8,17 @@ const userSchema = `
     age: Int
   }
 
+  type AuthError {
+    email: String
+    password: String
+  }
+
+  type AuthResponse {
+    user: User
+    token: String
+    errors: AuthError
+  }
+
   input UserInput {
     email: String!,
     nickName: String,
@@ -24,6 +35,7 @@ const userSchema = `
 
   type Mutation {
     signUp(password: String!, input: UserInput!): User
+    login(email: String!, password: String!) : AuthResponse
     updateUser(id: ID!, input: UserInput!): User
     deleteUser(id: ID!): String
   }
