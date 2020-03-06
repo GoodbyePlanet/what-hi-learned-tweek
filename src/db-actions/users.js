@@ -6,6 +6,8 @@ const getUsers = async () =>
 const getUserById = async id =>
   await User.findById(id).orFail(new Error(`User with ${id} not found!`));
 
+const findUserByEmail = async email => await User.find().byEmail(email);
+
 const createUser = async userData => await new User(userData).save();
 
 const updateUser = async (id, updatedUser) =>
@@ -25,4 +27,23 @@ const deleteUser = async id =>
     ? id
     : new Error(`Delete failed, ${id} not found!`);
 
-module.exports = { getUsers, getUserById, createUser, updateUser, deleteUser };
+const register = async userData => {
+  if (await findUserByEmail(userData.email).length) {
+    throw Error(`User with ${userData.email} already exists!`);
+  }
+
+  return await createUser({
+    ...userData,
+    password: userData.password,
+  });
+};
+
+module.exports = {
+  getUsers,
+  getUserById,
+  createUser,
+  updateUser,
+  deleteUser,
+  findUserByEmail,
+  register,
+};

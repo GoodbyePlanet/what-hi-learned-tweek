@@ -19,10 +19,11 @@ const userSchema = `
   type Query {
     getUsers: [User]
     getUserById(id: ID!): User
+    findUserByEmail(email: String!): User
   }
 
   type Mutation {
-    createUser(input: UserInput!): User
+    signUp(password: String!, input: UserInput!): User
     updateUser(id: ID!, input: UserInput!): User
     deleteUser(id: ID!): String
   }

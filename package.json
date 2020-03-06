@@ -19,10 +19,12 @@
   },
   "dependencies": {
     "apollo-server-express": "^2.10.1",
+    "bcrypt": "^4.0.1",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
     "graphql": "^14.6.0",
     "graphql-tools": "^4.0.7",
+    "isemail": "^3.2.0",
     "merge-graphql-schemas": "^1.7.6",
     "mongoose": "^5.9.2"
   }

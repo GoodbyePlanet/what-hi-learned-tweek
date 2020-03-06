@@ -14,6 +14,13 @@ app.get('/', async (_, res) => {
   res.json({ message: 'THIS IS THE INITAL ROUTE' });
 });
 
+const loggingMiddleware = (req, res, next) => {
+  console.log('ip:', req.ip);
+  next();
+};
+
+// app.use(loggingMiddleware);
+
 apolloServer.applyMiddleware({ app });
 
 app.use(notFound);
