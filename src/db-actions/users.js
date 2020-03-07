@@ -1,6 +1,8 @@
+require('dotenv').config();
+
 const User = require('../models/User');
 const jwt = require('jsonwebtoken');
-const config = require('../../config');
+const config = require('../../config').get(process.env.NODE_ENV);
 
 const getUsers = async () =>
   await User.find({}).orFail(new Error('No documents found'));
@@ -57,7 +59,7 @@ const login = async (email, password) => {
 };
 
 const generateAuthToken = user => {
-  return jwt.sign({ id: user._id }, config.AUTH_SECRET, {
+  return jwt.sign({ id: user._id }, config.auth.secret, {
     expiresIn: 86400, // in 24 hours
   });
 };

@@ -1,25 +1,24 @@
+require('dotenv').config();
+
 const SparkPost = require('sparkpost');
-const {
-  SPARKPOST_API_KEY,
-  SPARK_EU_ENDPOINT,
-  SPARK_SANDBOX_FROM_EMAIL,
-  NODE_ENV,
-} = require('../../config');
+const config = require('../../config').get(process.env.NODE_ENV);
 const confirmationEmailTemplate = require('./template');
 
-const client = new SparkPost(SPARKPOST_API_KEY, { origin: SPARK_EU_ENDPOINT });
+const client = new SparkPost(config.sparkPost.apiKey, {
+  origin: config.sparkPost.endpoint,
+});
 
 client.transmissions
   .send({
     options: {
-      sandbox: NODE_ENV === 'dev' ? true : false,
+      sandbox: process.env.NODE_ENV === 'dev' ? true : false,
     },
     content: {
-      from: SPARK_SANDBOX_FROM_EMAIL,
-      subject: 'Hello, World!',
+      from: config.sparkPost.fromEmail,
+      subject: 'Email Confirmation Code',
       html: confirmationEmailTemplate('cF1!jLk'),
     },
-    recipients: [{ address: 'amuagzrnzngvnkaghf@awdrt.org' }],
+    recipients: [{ address: 'ubgkrdwgmybcanmwxh@awdrt.net' }],
   })
   .then(data => {
     console.info('Email successfully sent!');

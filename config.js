@@ -1,11 +1,40 @@
 require('dotenv').config();
 
-module.exports = {
-  PORT: process.env.PORT || 3112,
-  NODE_ENV: process.env.NODE_ENV,
-  DATABASE_URL: process.env.DATABASE_URL,
-  AUTH_SECRET: process.env.AUTH_SECRET,
-  SPARKPOST_API_KEY: process.env.SPARKPOST_API_KEY,
-  SPARK_EU_ENDPOINT: process.env.SPARK_EU_ENDPOINT,
-  SPARK_SANDBOX_FROM_EMAIL: process.env.SPARK_SANDBOX_FROM_EMAIL,
+const config = {
+  dev: {
+    app: {
+      port: process.env.PORT || 3112,
+    },
+    database: {
+      url: process.env.DATABASE_URL,
+      password: process.env.DATABASE_PASS,
+    },
+    auth: {
+      secret: process.env.AUTH_SECRET,
+    },
+    sparkPost: {
+      apiKey: process.env.SPARKPOST_API_KEY,
+      endpoint: process.env.SPARK_EU_ENDPOINT,
+      fromEmail: process.env.SPARK_SANDBOX_FROM_EMAIL,
+    },
+  },
+  live: {
+    app: {
+      port: process.env.PORT || 3112,
+    },
+    database: {
+      url: process.env.DATABASE_LIVE_URL,
+      password: process.env.DATABASE_LIVE_PASS,
+    },
+    auth: {
+      secret: process.env.AUTH_SECRET,
+    },
+    sparkPost: {
+      apiKey: process.env.SPARKPOST_API_KEY,
+      endpoint: process.env.SPARK_EU_ENDPOINT,
+      fromEmail: process.env.SPARK_LIVE_FROM_EMAIL,
+    },
+  },
 };
+
+exports.get = env => config[env];
