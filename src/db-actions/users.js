@@ -1,5 +1,6 @@
 require('dotenv').config();
 
+const shortid = require('shortid');
 const User = require('../models/User');
 const jwt = require('jsonwebtoken');
 const config = require('../../config').get(process.env.NODE_ENV);
@@ -35,6 +36,9 @@ const register = async userData => {
   if (await findUserByEmail(userData.email)) {
     throw Error(`User with email: ${userData.email} already exists!`);
   }
+
+  // TODO Send email after User creation
+  // sendEmail(userData.email, generateActivationCode());
 
   return await createUser({
     ...userData,

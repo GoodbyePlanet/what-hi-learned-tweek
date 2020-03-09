@@ -14,6 +14,7 @@ const config = {
     },
     sendGrid: {
       apiKey: process.env.SENDGRID_API_KEY,
+      fromEmail: process.env.FROM_EMAIL,
     },
   },
   live: {
@@ -29,6 +30,7 @@ const config = {
     },
     sendGrid: {
       apiKey: process.env.SENDGRID_LIVE_API_KEY,
+      fromEmail: process.env.FROM_EMAIL,
     },
   },
 };
