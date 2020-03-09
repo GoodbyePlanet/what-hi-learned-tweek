@@ -12,10 +12,8 @@ const config = {
     auth: {
       secret: process.env.AUTH_SECRET,
     },
-    sparkPost: {
-      apiKey: process.env.SPARKPOST_API_KEY,
-      endpoint: process.env.SPARK_EU_ENDPOINT,
-      fromEmail: process.env.SPARK_SANDBOX_FROM_EMAIL,
+    sendGrid: {
+      apiKey: process.env.SENDGRID_API_KEY,
     },
   },
   live: {
@@ -29,10 +27,8 @@ const config = {
     auth: {
       secret: process.env.AUTH_SECRET,
     },
-    sparkPost: {
-      apiKey: process.env.SPARKPOST_API_KEY,
-      endpoint: process.env.SPARK_EU_ENDPOINT,
-      fromEmail: process.env.SPARK_LIVE_FROM_EMAIL,
+    sendGrid: {
+      apiKey: process.env.SENDGRID_LIVE_API_KEY,
     },
   },
 };

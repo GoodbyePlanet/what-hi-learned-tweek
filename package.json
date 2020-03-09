@@ -28,6 +28,6 @@
     "jsonwebtoken": "^8.5.1",
     "merge-graphql-schemas": "^1.7.6",
     "mongoose": "^5.9.2",
-    "sparkpost": "^2.1.4"
+    "sendgrid": "^5.2.3"
   }
 }
