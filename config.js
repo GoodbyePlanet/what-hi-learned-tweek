@@ -1,8 +1,38 @@
 require('dotenv').config();
 
-module.exports = {
-  PORT: process.env.PORT || 3112,
-  NODE_ENV: process.env.NODE_ENV,
-  DATABASE_URL: process.env.DATABASE_URL,
-  AUTH_SECRET: process.env.AUTH_SECRET,
+const config = {
+  dev: {
+    app: {
+      port: process.env.PORT || 3112,
+    },
+    database: {
+      url: process.env.DATABASE_URL,
+      password: process.env.DATABASE_PASS,
+    },
+    auth: {
+      secret: process.env.AUTH_SECRET,
+    },
+    sendGrid: {
+      apiKey: process.env.SENDGRID_API_KEY,
+      fromEmail: process.env.FROM_EMAIL,
+    },
+  },
+  live: {
+    app: {
+      port: process.env.PORT || 3112,
+    },
+    database: {
+      url: process.env.DATABASE_LIVE_URL,
+      password: process.env.DATABASE_LIVE_PASS,
+    },
+    auth: {
+      secret: process.env.AUTH_SECRET,
+    },
+    sendGrid: {
+      apiKey: process.env.SENDGRID_LIVE_API_KEY,
+      fromEmail: process.env.FROM_EMAIL,
+    },
+  },
 };
+
+exports.get = env => config[env];

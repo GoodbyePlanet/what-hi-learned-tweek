@@ -1,5 +1,7 @@
+require('dotenv').config();
+
 const { connection, connect } = require('mongoose');
-const { DATABASE_URL } = require('./../config');
+const config = require('../config').get(process.env.NODE_ENV);
 
 connection.on('connected', () => console.info('Connected to MongoDB'));
 connection.on('disconnected', () => console.info('Disconnected from MongoDB'));
@@ -10,4 +12,4 @@ const connectionOptions = {
 };
 
 exports.connection = connection;
-exports.connect = () => connect(DATABASE_URL, connectionOptions);
+exports.connect = () => connect(config.database.url, connectionOptions);

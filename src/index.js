@@ -1,6 +1,8 @@
+require('dotenv').config();
+
 const express = require('express');
 const { notFound, errorHandler } = require('./middlewares');
-const { PORT } = require('../config');
+const config = require('../config').get(process.env.NODE_ENV);
 const db = require('./db');
 const apolloServer = require('./graphqlRoute');
 
@@ -27,9 +29,9 @@ app.use(notFound);
 app.use(errorHandler);
 
 db.connection.on('connected', () => {
-  app.listen(PORT, () =>
+  app.listen(config.app.port, () =>
     console.log(
-      `Listening at http://localhost:${PORT}${apolloServer.graphqlPath}`,
+      `Listening at http://localhost:${config.app.port}${apolloServer.graphqlPath}`,
     ),
   );
 });
