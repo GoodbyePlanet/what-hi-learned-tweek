@@ -1,9 +1,10 @@
 require('dotenv').config();
 
-const shortid = require('shortid');
-const User = require('../models/User');
 const jwt = require('jsonwebtoken');
+const User = require('../models/User');
+const { createActivationToken } = require('./activationTokens');
 const config = require('../../config').get(process.env.NODE_ENV);
+const LOGGER = require('../logger/logger');
 
 const getUsers = async () =>
   await User.find({}).orFail(new Error('No documents found'));
@@ -40,10 +41,18 @@ const register = async userData => {
   // TODO Send email after User creation
   // sendEmail(userData.email, generateActivationCode());
 
-  return await createUser({
+  const createdUser = await createUser({
     ...userData,
     password: userData.password,
   });
+
+  LOGGER.info('CREATED USER', createdUser);
+
+  const createdActivationToken = await createActivationToken(createdUser._id);
+
+  console.log('CREATED ACTIVATION TOKEN', createdActivationToken);
+
+  return createdUser;
 };
 
 const login = async (email, password) => {
