@@ -1,27 +1,19 @@
-const ActivationToken = require('../models/ActivationToken');
 const shortid = require('shortid');
 
-// TODO REFACTOR THIS
-const createActivationToken = async user => {
-  console.log('INSIDE CREATE ACTIVATION TOKEN', user);
-  const activationToken = new ActivationToken({
-    user: user._id,
-    token: shortid.generate(),
-  });
+const ActivationToken = require('../models/ActivationToken');
+const LOGGER = require('../logger/logger');
 
-  await activationToken.save(err => {
-    if (!err) {
-      console.log('NO ERRORS FOUND', activationToken._id);
-      const populated = ActivationToken.findById(activationToken._id)
-        .populate('user')
-        .exec((err, user) => {
-          if (err) {
-            console.log(err);
-          }
-          console.log('POPULATED', user);
-        });
-    }
-  });
+const createActivationToken = async userId => {
+  const activationToken = await new ActivationToken({
+    user: userId,
+    token: shortid.generate(),
+  }).save();
+  const populatedActivationToken = await ActivationToken.findById(
+    activationToken._id,
+  ).populate('user');
+
+  LOGGER.info('POPULATED ACTIVATION TOKEN', populatedActivationToken);
+  return populatedActivationToken;
 };
 
 module.exports = { createActivationToken };

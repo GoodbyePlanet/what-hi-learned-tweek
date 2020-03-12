@@ -4,6 +4,7 @@ const jwt = require('jsonwebtoken');
 const User = require('../models/User');
 const { createActivationToken } = require('./activationTokens');
 const config = require('../../config').get(process.env.NODE_ENV);
+const LOGGER = require('../logger/logger');
 
 const getUsers = async () =>
   await User.find({}).orFail(new Error('No documents found'));
@@ -45,9 +46,9 @@ const register = async userData => {
     password: userData.password,
   });
 
-  console.log('CREATED USER', createdUser);
-  console.log('ACTIVATION TOKEN', typeof createActivationToken);
-  await createActivationToken(createdUser);
+  LOGGER.info('CREATED USER', createdUser);
+
+  const createdActivationToken = await createActivationToken(createdUser._id);
 
   console.log('CREATED ACTIVATION TOKEN', createdActivationToken);
 
