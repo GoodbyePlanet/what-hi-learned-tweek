@@ -1,7 +1,7 @@
 require('dotenv').config();
 
 const jwt = require('jsonwebtoken');
-const User = require('../models/User');
+const { User } = require('../models/User');
 const { createActivationToken } = require('./activationTokens');
 const config = require('../../config').get(process.env.NODE_ENV);
 const sendEmail = require('../email/sendEmail');
@@ -47,7 +47,7 @@ const register = async userData => {
     const {
       user: { email },
       token,
-    } = await createActivationToken(createdUser._id);
+    } = await createActivationToken(createdUser);
 
     sendEmail(email, token);
 

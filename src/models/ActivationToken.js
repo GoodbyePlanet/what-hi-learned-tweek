@@ -1,11 +1,11 @@
 const mongoose = require('mongoose');
+const { userSchema } = require('../models/User');
 
 const { Schema } = mongoose;
 
 const activationTokenSchema = Schema({
   user: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'User',
+    type: userSchema,
     required: true,
   },
   token: { type: String, required: true },
