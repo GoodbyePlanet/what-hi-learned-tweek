@@ -4,6 +4,7 @@ const jwt = require('jsonwebtoken');
 const User = require('../models/User');
 const { createActivationToken } = require('./activationTokens');
 const config = require('../../config').get(process.env.NODE_ENV);
+const sendEmail = require('../email/sendEmail');
 const LOGGER = require('../logger/logger');
 
 const getUsers = async () =>
@@ -34,25 +35,26 @@ const deleteUser = async id =>
     : new Error(`Delete failed, ${id} not found!`);
 
 const register = async userData => {
-  if (await findUserByEmail(userData.email)) {
-    throw Error(`User with email: ${userData.email} already exists!`);
+  try {
+    if (await findUserByEmail(userData.email)) {
+      throw Error(`User with email: ${userData.email} already exists!`);
+    }
+
+    const createdUser = await createUser({
+      ...userData,
+      password: userData.password,
+    });
+    const {
+      user: { email },
+      token,
+    } = await createActivationToken(createdUser._id);
+
+    sendEmail(email, token);
+
+    return createdUser;
+  } catch (error) {
+    LOGGER.error('An error has occurred', error);
   }
-
-  // TODO Send email after User creation
-  // sendEmail(userData.email, generateActivationCode());
-
-  const createdUser = await createUser({
-    ...userData,
-    password: userData.password,
-  });
-
-  LOGGER.info('CREATED USER', createdUser);
-
-  const createdActivationToken = await createActivationToken(createdUser._id);
-
-  console.log('CREATED ACTIVATION TOKEN', createdActivationToken);
-
-  return createdUser;
 };
 
 const login = async (email, password) => {
