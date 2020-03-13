@@ -1,6 +1,6 @@
 require('dotenv').config();
 
-const shortid = require('shortid');
+const LOGGER = require('../logger/logger');
 const config = require('../../config').get(process.env.NODE_ENV);
 const sendGridEmail = require('sendgrid')(config.sendGrid.apiKey);
 const confirmationEmailTemplate = require('./template');
@@ -17,7 +17,7 @@ const createEmailRequest = (to, activationCode) =>
               email: to,
             },
           ],
-          subject: 'Nemanjas Registration Confirmation code',
+          subject: 'Nemanjas: Email Confirmation Code',
         },
       ],
       from: {
@@ -32,14 +32,17 @@ const createEmailRequest = (to, activationCode) =>
     },
   });
 
-sendGridEmail
-  .API(createEmailRequest('nemanjavasa@gmail.com', shortid.generate()))
-  .then(response =>
-    console.log('Successfully sent registration email', response),
-  )
-  .catch(error =>
-    console.error(
-      'An error has occurred while sending an email',
-      error.response,
-    ),
-  );
+const sendEmail = (email, activaitonCode) =>
+  sendGridEmail
+    .API(createEmailRequest(email, activaitonCode))
+    .then(response =>
+      LOGGER.info('Successfully sent registration email', response),
+    )
+    .catch(error =>
+      LOGGER.error(
+        'An error has occurred while sending an email',
+        error.response,
+      ),
+    );
+
+module.exports = sendEmail;
