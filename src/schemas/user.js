@@ -1,8 +1,8 @@
 const userSchema = `
   type User {
-    id: ID!,
-    email: String!,
-    nickName: String,
+    id: ID!
+    email: String!
+    nickName: String
     firstName: String
     lastName: String
     age: Int
@@ -20,10 +20,10 @@ const userSchema = `
   }
 
   input UserInput {
-    email: String!,
-    nickName: String,
-    firstName: String,
-    lastName: String,
+    email: String!
+    nickName: String
+    firstName: String
+    lastName: String
     age: Int
   }
 
