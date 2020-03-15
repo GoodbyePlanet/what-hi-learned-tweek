@@ -10,7 +10,7 @@ const activationTokenSchema = Schema(
       required: true,
     },
     token: { type: String, required: true },
-    reedemed: { type: Boolean, default: false },
+    redeemed: { type: Boolean, default: false },
     invalidated: { type: Boolean, default: false },
     alreadyUsed: { type: Boolean, default: false },
   },

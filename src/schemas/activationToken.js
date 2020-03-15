@@ -3,7 +3,7 @@ const activationTokenSchema = `
     id: ID!
     user: User
     token: String
-    reedemed: Boolean
+    redeemed: Boolean
     invalidated: Boolean
     alreadyUsed: Boolean
   }
