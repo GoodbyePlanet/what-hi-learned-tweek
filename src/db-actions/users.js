@@ -108,7 +108,7 @@ const isExpired = createdAt =>
 
 const generateAuthToken = user => {
   return jwt.sign({ id: user._id }, config.auth.secret, {
-    expiresIn: 86400, // in 24 hours
+    expiresIn: config.auth.expiresIn,
   });
 };
 
