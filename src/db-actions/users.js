@@ -5,6 +5,7 @@ const moment = require('moment');
 const { User } = require('../models/User');
 const {
   createActivationToken,
+  updateActivationToken,
   getNotRedeemedAndNotInvalidatedTokenByUserId,
 } = require('./activationTokens');
 const config = require('../../config').get(process.env.NODE_ENV);
@@ -89,18 +90,26 @@ const activateAccount = async (token, userId) => {
   // 2. Invalidated token  => Invalid token
   // 2. Already redeemed   => Invalid token
   // 3. Token expired      => Token is expired, request new one
-  const activationToken = await getNotRedeemedAndNotInvalidatedTokenByUserId(
-    userId,
-  );
-  const isTokenExpired = isExpired(activationToken.createdAt);
 
-  if (activationToken && token === activationToken.token && !isTokenExpired) {
-    return { user: activationToken.user, errors: null };
+  try {
+    const activationToken = await getNotRedeemedAndNotInvalidatedTokenByUserId(
+      userId,
+    );
+    const isTokenExpired = isExpired(
+      activationToken && activationToken.createdAt,
+    );
+
+    if (activationToken && token === activationToken.token && !isTokenExpired) {
+      await updateActivationToken(activationToken._id);
+      return { user: activationToken.user, errors: null };
+    }
+
+    return {
+      errors: { invalidToken: true, expired: isTokenExpired },
+    };
+  } catch (error) {
+    LOGGER.error('Account Activation failed', error);
   }
-
-  return {
-    errors: { invalidToken: true, expired: isTokenExpired },
-  };
 };
 
 const isExpired = createdAt =>

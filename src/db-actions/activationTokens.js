@@ -13,6 +13,15 @@ const createActivationToken = async user => {
   return activationToken;
 };
 
+const updateActivationToken = async id =>
+  await ActivationToken.findByIdAndUpdate(
+    id,
+    {
+      redeemed: true,
+    },
+    { new: true, useFindAndModify: false },
+  );
+
 const getActivationToken = async userId =>
   await ActivationToken.findOne({
     'user._id': userId,
@@ -21,12 +30,13 @@ const getActivationToken = async userId =>
 const getNotRedeemedAndNotInvalidatedTokenByUserId = async userId =>
   await ActivationToken.findOne({
     'user._id': userId,
-    reedemed: { $eq: false },
+    redeemed: { $eq: false },
     invalidated: { $eq: false },
   });
 
 module.exports = {
   createActivationToken,
+  updateActivationToken,
   getActivationToken,
   getNotRedeemedAndNotInvalidatedTokenByUserId,
 };
