@@ -79,18 +79,6 @@ const login = async (email, password) => {
 };
 
 const activateAccount = async (token, userId) => {
-  // TODO Confirm email address
-  // 1. Check is token maching one from database
-  // 2. Check is token expired
-  // 3. Check is token already redeemed
-  // Success
-  // return successfully confirmed email
-  // Error
-  // 1. Token not exists   => Invalid token
-  // 2. Invalidated token  => Invalid token
-  // 2. Already redeemed   => Invalid token
-  // 3. Token expired      => Token is expired, request new one
-
   try {
     const activationToken = await getNotRedeemedAndNotInvalidatedTokenByUserId(
       userId,
