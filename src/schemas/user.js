@@ -19,6 +19,16 @@ const userSchema = `
     errors: AuthError
   }
 
+  type ActivateAccountError {
+    invalidToken: Boolean
+    expired: Boolean
+  }
+
+  type ActivateAccountResponse {
+    user: User
+    errors: ActivateAccountError
+  }
+
   input UserInput {
     email: String!
     nickName: String
@@ -36,6 +46,7 @@ const userSchema = `
   type Mutation {
     signUp(password: String!, input: UserInput!): User
     login(email: String!, password: String!) : AuthResponse
+    activateAccount(activationToken: String!, userId: String!): ActivateAccountResponse
     updateUser(id: ID!, input: UserInput!): User
     deleteUser(id: ID!): String
   }

@@ -1,8 +1,12 @@
 require('dotenv').config();
 
 const jwt = require('jsonwebtoken');
+const moment = require('moment');
 const { User } = require('../models/User');
-const { createActivationToken } = require('./activationTokens');
+const {
+  createActivationToken,
+  getNotRedeemedAndNotInvalidatedTokenByUserId,
+} = require('./activationTokens');
 const config = require('../../config').get(process.env.NODE_ENV);
 const sendEmail = require('../email/sendEmail');
 const LOGGER = require('../logger/logger');
@@ -73,6 +77,35 @@ const login = async (email, password) => {
   };
 };
 
+const activateAccount = async (token, userId) => {
+  // TODO Confirm email address
+  // 1. Check is token maching one from database
+  // 2. Check is token expired
+  // 3. Check is token already redeemed
+  // Success
+  // return successfully confirmed email
+  // Error
+  // 1. Token not exists   => Invalid token
+  // 2. Invalidated token  => Invalid token
+  // 2. Already redeemed   => Invalid token
+  // 3. Token expired      => Token is expired, request new one
+  const activationToken = await getNotRedeemedAndNotInvalidatedTokenByUserId(
+    userId,
+  );
+  const isTokenExpired = isExpired(activationToken.createdAt);
+
+  if (activationToken && token === activationToken.token && !isTokenExpired) {
+    return { user: activationToken.user, errors: null };
+  }
+
+  return {
+    errors: { invalidToken: true, expired: isTokenExpired },
+  };
+};
+
+const isExpired = createdAt =>
+  moment.duration(moment().diff(moment(createdAt))).asHours() > 24;
+
 const generateAuthToken = user => {
   return jwt.sign({ id: user._id }, config.auth.secret, {
     expiresIn: 86400, // in 24 hours
@@ -88,4 +121,5 @@ module.exports = {
   findUserByEmail,
   register,
   login,
+  activateAccount,
 };
