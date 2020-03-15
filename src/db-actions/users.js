@@ -100,6 +100,8 @@ const activateAccount = async (token, userId) => {
   }
 };
 
+const resendActivationToken = async userId => {};
+
 const isExpired = createdAt =>
   moment.duration(moment().diff(moment(createdAt))).asHours() > 24;
 
@@ -119,4 +121,5 @@ module.exports = {
   register,
   login,
   activateAccount,
+  resendActivationToken,
 };

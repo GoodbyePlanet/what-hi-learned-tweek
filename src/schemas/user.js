@@ -47,6 +47,7 @@ const userSchema = `
     signUp(password: String!, input: UserInput!): User
     login(email: String!, password: String!) : AuthResponse
     activateAccount(activationToken: String!, userId: String!): ActivateAccountResponse
+    resendActivationToken(userId: String!): String
     updateUser(id: ID!, input: UserInput!): User
     deleteUser(id: ID!): String
   }
