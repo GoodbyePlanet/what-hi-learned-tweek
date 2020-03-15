@@ -7,6 +7,7 @@ const {
   register,
   login,
   activateAccount,
+  resendActivationToken,
 } = require('../db-actions/users');
 
 const userResolvers = {
@@ -21,6 +22,7 @@ const userResolvers = {
     login: (_, { email, password }) => login(email, password),
     activateAccount: (_, { activationToken, userId }) =>
       activateAccount(activationToken, userId),
+    resendActivationToken: (_, { userId }) => resendActivationToken(userId),
     updateUser: (_, { id, input: updatedUser }) => updateUser(id, updatedUser),
     deleteUser: (_, { id }) => deleteUser(id),
   },
