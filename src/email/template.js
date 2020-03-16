@@ -1,5 +1,4 @@
 module.exports = code => {
-  console.log('CODE ', code);
   return `<!DOCTYPE html>
   <html
     lang="en"

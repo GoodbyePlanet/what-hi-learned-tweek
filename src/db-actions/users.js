@@ -4,9 +4,11 @@ const jwt = require('jsonwebtoken');
 const moment = require('moment');
 const { User } = require('../models/User');
 const {
+  getActivationToken,
   createActivationToken,
-  updateActivationToken,
+  redeemeActivationToken,
   getNotRedeemedAndNotInvalidatedTokenByUserId,
+  invalidateActivationToken,
 } = require('./activationTokens');
 const config = require('../../config').get(process.env.NODE_ENV);
 const sendEmail = require('../email/sendEmail');
@@ -88,7 +90,7 @@ const activateAccount = async (token, userId) => {
     );
 
     if (activationToken && token === activationToken.token && !isTokenExpired) {
-      await updateActivationToken(activationToken._id);
+      await redeemeActivationToken(activationToken._id);
       return { user: activationToken.user, errors: null };
     }
 
@@ -100,7 +102,25 @@ const activateAccount = async (token, userId) => {
   }
 };
 
-const resendActivationToken = async userId => {};
+// Update old activationToken => set invalidated to true, and create new activationToken
+const resendActivationToken = async userId => {
+  try {
+    const oldActivationToken = await getActivationToken(userId);
+
+    if (oldActivationToken) {
+      await invalidateActivationToken(oldActivationToken._id);
+    }
+
+    const user = oldActivationToken
+      ? oldActivationToken.user
+      : await getUserById(userId);
+    const createdActToken = await createActivationToken(user);
+
+    // TODO sendEmail with new Activation Token
+  } catch (error) {
+    LOGGER.error('Resend Activation Token failed', error);
+  }
+};
 
 const isExpired = createdAt =>
   moment.duration(moment().diff(moment(createdAt))).asHours() > 24;
