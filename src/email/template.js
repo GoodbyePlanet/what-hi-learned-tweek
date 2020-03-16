@@ -1,4 +1,4 @@
-module.exports = code => {
+module.exports = (code, body) => {
   return `<!DOCTYPE html>
   <html
     lang="en"
@@ -177,7 +177,7 @@ module.exports = code => {
                           <div
                             style="color:#187272;font-family:'Droid Sans', 'Helvetica Neue', Arial, sans-serif;font-size:16px;line-height:20px;text-align:center;"
                           >
-                            Here is your email confirmation code
+                             ${body}
                           </div>
                         </td>
                       </tr>
