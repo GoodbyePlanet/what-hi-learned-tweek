@@ -116,7 +116,7 @@ const resendActivationToken = async userId => {
       : await getUserById(userId);
     const createdActToken = await createActivationToken(user);
 
-    // TODO sendEmail with new Activation Token
+    sendEmail(user.email, createdActToken.token, true);
   } catch (error) {
     LOGGER.error('Resend Activation Token failed', error);
   }

@@ -5,8 +5,12 @@ const config = require('../../config').get(process.env.NODE_ENV);
 const sendGridEmail = require('sendgrid')(config.sendGrid.apiKey);
 const confirmationEmailTemplate = require('./template');
 
-const createEmailRequest = (to, activationCode) =>
-  sendGridEmail.emptyRequest({
+const createEmailRequest = (to, activationCode, isResend) => {
+  const body = isResend
+    ? 'You requested a new email confirmation code :)'
+    : 'Your Email Confirmation Code :)';
+
+  return sendGridEmail.emptyRequest({
     method: 'POST',
     path: '/v3/mail/send',
     body: {
@@ -26,15 +30,16 @@ const createEmailRequest = (to, activationCode) =>
       content: [
         {
           type: 'text/html',
-          value: confirmationEmailTemplate(activationCode),
+          value: confirmationEmailTemplate(activationCode, body),
         },
       ],
     },
   });
+};
 
-const sendEmail = (email, activaitonCode) =>
+const sendEmail = (email, activaitonCode, isResend) =>
   sendGridEmail
-    .API(createEmailRequest(email, activaitonCode))
+    .API(createEmailRequest(email, activaitonCode, isResend))
     .then(response =>
       LOGGER.info('Successfully sent registration email', response),
     )
