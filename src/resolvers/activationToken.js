@@ -2,7 +2,7 @@ const { getActivationToken } = require('../db-actions/activationTokens');
 
 const activationTokenResolvers = {
   Query: {
-    getActivationToken: (_, { userId }) => getActivationToken(userId),
+    getActivationToken: (_, { developerId }) => getActivationToken(developerId),
   },
 };
 

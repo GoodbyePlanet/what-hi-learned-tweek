@@ -1,7 +1,7 @@
 const activationTokenSchema = `
   type ActivationToken {
     id: ID!
-    user: User
+    developer: Developer
     token: String
     redeemed: Boolean
     invalidated: Boolean
@@ -9,7 +9,7 @@ const activationTokenSchema = `
   }
 
   type Query {
-    getActivationToken(userId: String!): ActivationToken
+    getActivationToken(developerId: String!): ActivationToken
   }
 `;
 

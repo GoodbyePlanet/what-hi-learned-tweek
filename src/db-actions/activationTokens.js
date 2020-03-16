@@ -5,9 +5,9 @@ const LOGGER = require('../logger/logger');
 
 const MONGOOSE_UPDATE_OPTIONS = { new: true, useFindAndModify: false };
 
-const createActivationToken = async user => {
+const createActivationToken = async developer => {
   const activationToken = await new ActivationToken({
-    user,
+    developer,
     token: shortid.generate(),
   }).save();
 
@@ -33,14 +33,14 @@ const invalidateActivationToken = async id =>
     MONGOOSE_UPDATE_OPTIONS,
   );
 
-const getActivationToken = async userId =>
+const getActivationToken = async developerId =>
   await ActivationToken.findOne({
-    'user._id': userId,
+    'developer._id': developerId,
   });
 
-const getNotRedeemedAndNotInvalidatedTokenByUserId = async userId =>
+const getNotRedeemedAndNotInvalidatedTokenByDeveloperId = async developerId =>
   await ActivationToken.findOne({
-    'user._id': userId,
+    'developer._id': developerId,
     redeemed: { $eq: false },
     invalidated: { $eq: false },
   });
@@ -49,6 +49,6 @@ module.exports = {
   createActivationToken,
   redeemeActivationToken,
   getActivationToken,
-  getNotRedeemedAndNotInvalidatedTokenByUserId,
+  getNotRedeemedAndNotInvalidatedTokenByDeveloperId,
   invalidateActivationToken,
 };
