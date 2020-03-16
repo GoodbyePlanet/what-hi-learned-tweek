@@ -7,7 +7,7 @@ const { isLongEnough, isStrongEnough } = require('../validation/password');
 
 const SALT_WORK_FACTOR = 10;
 
-const userSchema = new Schema({
+const developerSchema = new Schema({
   email: {
     type: String,
     validate: {
@@ -20,23 +20,27 @@ const userSchema = new Schema({
   nickName: { type: String, required: true },
   firstName: { type: String, required: true },
   lastName: { type: String, required: true },
-  age: { type: Number, min: [18, 'User has to be adult'], required: false },
+  age: {
+    type: Number,
+    min: [18, 'Developer has to be adult'],
+    required: false,
+  },
 });
 
-userSchema.statics.generateHash = function(password) {
+developerSchema.statics.generateHash = function(password) {
   const salt = bcrypt.genSaltSync(SALT_WORK_FACTOR);
   return bcrypt.hashSync(password, salt);
 };
 
-userSchema.methods.isValidPassword = async function(password) {
+developerSchema.methods.isValidPassword = async function(password) {
   return bcrypt.compareSync(password, this.password);
 };
 
-userSchema.path('password').validate(function(password) {
+developerSchema.path('password').validate(function(password) {
   return isLongEnough(password) && isStrongEnough(password);
 });
 
-userSchema.pre('save', function(next) {
+developerSchema.pre('save', function(next) {
   this.password = bcrypt.hashSync(
     this.password,
     bcrypt.genSaltSync(SALT_WORK_FACTOR),
@@ -44,6 +48,6 @@ userSchema.pre('save', function(next) {
   next();
 });
 
-const User = mongoose.model('User', userSchema);
+const Developer = mongoose.model('Developer', developerSchema);
 
-module.exports = { User, userSchema };
+module.exports = { Developer, developerSchema };

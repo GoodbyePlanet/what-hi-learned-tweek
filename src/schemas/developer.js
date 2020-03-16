@@ -1,5 +1,5 @@
-const userSchema = `
-  type User {
+const developerSchema = `
+  type Developer {
     id: ID!
     email: String!
     nickName: String
@@ -14,7 +14,7 @@ const userSchema = `
   }
 
   type AuthResponse {
-    user: User
+    developer: Developer
     token: String
     errors: AuthError
   }
@@ -25,11 +25,11 @@ const userSchema = `
   }
 
   type ActivateAccountResponse {
-    user: User
+    developer: Developer
     errors: ActivateAccountError
   }
 
-  input UserInput {
+  input DeveloperInput {
     email: String!
     nickName: String
     firstName: String
@@ -38,19 +38,19 @@ const userSchema = `
   }
 
   type Query {
-    getUsers: [User]
-    getUserById(id: ID!): User
-    findUserByEmail(email: String!): User
+    getDevelopers: [Developer]
+    getDeveloperById(id: ID!): Developer
+    findDeveloperByEmail(email: String!): Developer
   }
 
   type Mutation {
-    signUp(password: String!, input: UserInput!): User
+    signUp(password: String!, input: DeveloperInput!): Developer
     login(email: String!, password: String!) : AuthResponse
-    activateAccount(activationToken: String!, userId: String!): ActivateAccountResponse
-    resendActivationToken(userId: String!): String
-    updateUser(id: ID!, input: UserInput!): User
-    deleteUser(id: ID!): String
+    activateAccount(activationToken: String!, developerId: String!): ActivateAccountResponse
+    resendActivationToken(developerId: String!): String
+    updateDeveloper(id: ID!, input: DeveloperInput!): Developer
+    deleteDeveloper(id: ID!): String
   }
 `;
 
-module.exports = userSchema;
+module.exports = developerSchema;
