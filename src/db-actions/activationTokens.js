@@ -3,6 +3,8 @@ const shortid = require('shortid');
 const ActivationToken = require('../models/ActivationToken');
 const LOGGER = require('../logger/logger');
 
+const MONGOOSE_UPDATE_OPTIONS = { new: true, useFindAndModify: false };
+
 const createActivationToken = async user => {
   const activationToken = await new ActivationToken({
     user,
@@ -13,13 +15,22 @@ const createActivationToken = async user => {
   return activationToken;
 };
 
-const updateActivationToken = async id =>
+const redeemeActivationToken = async id =>
   await ActivationToken.findByIdAndUpdate(
     id,
     {
       redeemed: true,
     },
-    { new: true, useFindAndModify: false },
+    MONGOOSE_UPDATE_OPTIONS,
+  );
+
+const invalidateActivationToken = async id =>
+  await ActivationToken.findByIdAndUpdate(
+    id,
+    {
+      invalidated: true,
+    },
+    MONGOOSE_UPDATE_OPTIONS,
   );
 
 const getActivationToken = async userId =>
@@ -36,7 +47,8 @@ const getNotRedeemedAndNotInvalidatedTokenByUserId = async userId =>
 
 module.exports = {
   createActivationToken,
-  updateActivationToken,
+  redeemeActivationToken,
   getActivationToken,
   getNotRedeemedAndNotInvalidatedTokenByUserId,
+  invalidateActivationToken,
 };
