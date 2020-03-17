@@ -18,13 +18,6 @@ const developerSchema = new Schema({
   },
   password: { type: String, required: true },
   nickName: { type: String, required: true },
-  firstName: { type: String, required: true },
-  lastName: { type: String, required: true },
-  age: {
-    type: Number,
-    min: [18, 'Developer has to be adult'],
-    required: false,
-  },
 });
 
 developerSchema.statics.generateHash = function(password) {

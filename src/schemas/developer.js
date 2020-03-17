@@ -3,9 +3,6 @@ const developerSchema = `
     id: ID!
     email: String!
     nickName: String
-    firstName: String
-    lastName: String
-    age: Int
   }
 
   type AuthError {
@@ -32,9 +29,6 @@ const developerSchema = `
   input DeveloperInput {
     email: String!
     nickName: String
-    firstName: String
-    lastName: String
-    age: Int
   }
 
   type Query {
