@@ -13,7 +13,9 @@ const {
   findDeveloperByEmail,
   createDeveloper,
 } = require('../db-actions/developers');
-const config = require('../../config').get(process.env.NODE_ENV);
+const {
+  auth: { accessToken, refreshToken },
+} = require('../../config').get(process.env.NODE_ENV);
 const sendEmail = require('../email/sendEmail');
 const LOGGER = require('../logger/logger');
 
@@ -50,11 +52,11 @@ const login = async (email, password, res) => {
   if (developer && validPassword) {
     const token = generateAccessToken(developer);
     res.cookie('access-token', token, {
-      expires: new Date(Date.now() + 2 * 900000), // access-token will be removed after 30 min
+      expires: generateExpirationDate(2, 900000), // access-token will be removed after 30 min
     });
-    // res.cookie('access-token', generateAccessToken(developer), {
-    //   expires: new Date(Date.now() + 8 * 3600000), // cookie will be removed after 8 hours
-    // });
+    res.cookie('refresh-token', generateRefreshToken(developer), {
+      expires: generateExpirationDate(8, 3600000), // refresh-token will be removed after 8 hours
+    });
 
     return { developer, token, errors: null };
   }
@@ -112,14 +114,18 @@ const resendActivationToken = async developerId => {
 const isExpired = createdAt =>
   moment.duration(moment().diff(moment(createdAt))).asHours() > 24;
 
-const generateAccessToken = ({ _id, nickName }) => {
-  console.log('EXPIRES IN ', config.auth.acessTokenExpiresIn);
-  return jwt.sign({ id: _id, nickName }, config.auth.secret, {
-    expiresIn: config.auth.acessTokenExpiresIn,
+const generateAccessToken = ({ _id, nickName }) =>
+  jwt.sign({ id: _id, nickName }, accessToken.secret, {
+    expiresIn: accessToken.expiresIn,
   });
-};
 
-// TODO: Implement generateRefreshToken
+const generateRefreshToken = ({ _id }) =>
+  jwt.sign({ id: _id }, refreshToken.secret, {
+    expiresIn: refreshToken.expiresIn,
+  });
+
+const generateExpirationDate = (multiplier, miliseconds) =>
+  new Date(Date.now() + multiplier * miliseconds);
 
 module.exports = {
   register,
