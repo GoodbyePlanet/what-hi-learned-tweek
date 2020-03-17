@@ -10,8 +10,14 @@ const config = {
       password: process.env.DATABASE_PASS,
     },
     auth: {
-      secret: process.env.AUTH_SECRET,
-      acessTokenExpiresIn: process.env.ACCESS_TOKEN_EXPIRES,
+      accessToken: {
+        secret: process.env.ACCESS_TOKEN_SECRET,
+        expiresIn: process.env.ACCESS_TOKEN_EXPIRES,
+      },
+      refreshToken: {
+        secret: process.env.REFRESH_TOKEN_SECRET,
+        expiresIn: process.env.REFRESH_TOKEN_EXPIRES,
+      },
     },
     sendGrid: {
       apiKey: process.env.SENDGRID_API_KEY,
@@ -27,8 +33,14 @@ const config = {
       password: process.env.DATABASE_LIVE_PASS,
     },
     auth: {
-      secret: process.env.AUTH_SECRET,
-      acessTokenExpiresIn: process.env.ACCESS_TOKEN_EXPIRES,
+      accessToken: {
+        secret: process.env.ACCESS_TOKEN_SECRET,
+        expiresIn: process.env.ACCESS_TOKEN_EXPIRES,
+      },
+      refreshToken: {
+        secret: process.env.REFRESH_TOKEN_SECRET,
+        expiresIn: process.env.REFRESH_TOKEN_EXPIRES,
+      },
     },
     sendGrid: {
       apiKey: process.env.SENDGRID_LIVE_API_KEY,
