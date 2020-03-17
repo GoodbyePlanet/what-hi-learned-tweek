@@ -15,6 +15,10 @@ const resolvers = mergeResolvers(
   fileLoader(path.join(__dirname, './resolvers')),
 );
 
-const apolloServer = new ApolloServer({ typeDefs, resolvers });
+const apolloServer = new ApolloServer({
+  typeDefs,
+  resolvers,
+  context: ({ req, res }) => ({ req, res }),
+});
 
 module.exports = apolloServer;

@@ -42,13 +42,21 @@ const register = async developerData => {
   }
 };
 
-const login = async (email, password) => {
+const login = async (email, password, res) => {
   const developer = await findDeveloperByEmail(email);
   const validPassword =
     developer && (await developer.isValidPassword(password));
 
   if (developer && validPassword) {
-    return { developer, token: generateAccessToken(developer), errors: null };
+    const token = generateAccessToken(developer);
+    res.cookie('access-token', token, {
+      expires: new Date(Date.now() + 2 * 900000), // access-token will be removed after 30 min
+    });
+    // res.cookie('access-token', generateAccessToken(developer), {
+    //   expires: new Date(Date.now() + 8 * 3600000), // cookie will be removed after 8 hours
+    // });
+
+    return { developer, token, errors: null };
   }
 
   return {
@@ -105,10 +113,13 @@ const isExpired = createdAt =>
   moment.duration(moment().diff(moment(createdAt))).asHours() > 24;
 
 const generateAccessToken = ({ _id, nickName }) => {
+  console.log('EXPIRES IN ', config.auth.acessTokenExpiresIn);
   return jwt.sign({ id: _id, nickName }, config.auth.secret, {
     expiresIn: config.auth.acessTokenExpiresIn,
   });
 };
+
+// TODO: Implement generateRefreshToken
 
 module.exports = {
   register,
