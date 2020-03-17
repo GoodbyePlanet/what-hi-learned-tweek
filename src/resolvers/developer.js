@@ -4,11 +4,13 @@ const {
   updateDeveloper,
   deleteDeveloper,
   findDeveloperByEmail,
+} = require('../db-actions/developers');
+const {
   register,
   login,
   activateAccount,
   resendActivationToken,
-} = require('../db-actions/developers');
+} = require('../accessControl/accessControl');
 
 const developerResolvers = {
   Query: {
