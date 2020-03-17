@@ -48,7 +48,7 @@ const login = async (email, password) => {
     developer && (await developer.isValidPassword(password));
 
   if (developer && validPassword) {
-    return { developer, token: generateAuthToken(developer), errors: null };
+    return { developer, token: generateAccessToken(developer), errors: null };
   }
 
   return {
@@ -104,9 +104,9 @@ const resendActivationToken = async developerId => {
 const isExpired = createdAt =>
   moment.duration(moment().diff(moment(createdAt))).asHours() > 24;
 
-const generateAuthToken = developer => {
-  return jwt.sign({ id: developer._id }, config.auth.secret, {
-    expiresIn: config.auth.expiresIn,
+const generateAccessToken = ({ _id, nickName }) => {
+  return jwt.sign({ id: _id, nickName }, config.auth.secret, {
+    expiresIn: config.auth.acessTokenExpiresIn,
   });
 };
 
