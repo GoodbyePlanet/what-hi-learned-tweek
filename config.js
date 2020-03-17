@@ -11,7 +11,7 @@ const config = {
     },
     auth: {
       secret: process.env.AUTH_SECRET,
-      expiresIn: process.env.AUTH_TOKEN_EXPIRES,
+      acessTokenExpiresIn: process.env.ACCESS_TOKEN_EXPIRES,
     },
     sendGrid: {
       apiKey: process.env.SENDGRID_API_KEY,
@@ -28,7 +28,7 @@ const config = {
     },
     auth: {
       secret: process.env.AUTH_SECRET,
-      expiresIn: process.env.AUTH_TOKEN_EXPIRES,
+      acessTokenExpiresIn: process.env.ACCESS_TOKEN_EXPIRES,
     },
     sendGrid: {
       apiKey: process.env.SENDGRID_LIVE_API_KEY,
