@@ -1,4 +1,6 @@
 const developerSchema = `
+  directive @isAuthenticated on FIELD | FIELD_DEFINITION | INPUT_FIELD_DEFINITION
+
   type Developer {
     id: ID!
     email: String!
@@ -32,7 +34,7 @@ const developerSchema = `
   }
 
   type Query {
-    getDevelopers: [Developer]
+    getDevelopers: [Developer] @isAuthenticated
     getDeveloperById(id: ID!): Developer
     findDeveloperByEmail(email: String!): Developer
   }

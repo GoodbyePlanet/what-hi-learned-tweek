@@ -12,22 +12,10 @@ const {
   resendActivationToken,
 } = require('../accessControl/accessControl');
 
-const checkIsAuthenticatedAndResolve = (req, controller) => {
-  const isAuthenticated = req.developerId;
-
-  if (!isAuthenticated) {
-    console.log('NOT AUTHENTICATED');
-    return null;
-  }
-
-  return controller(req.developerId);
-};
-
 const developerResolvers = {
   Query: {
     getDevelopers: () => getDevelopers(),
-    getDeveloperById: (_, { id }, { req }) =>
-      checkIsAuthenticatedAndResolve(req, getDeveloperById),
+    getDeveloperById: (_, { id }) => getDeveloperById(id),
     findDeveloperByEmail: (_, { email }) => findDeveloperByEmail(email),
   },
   Mutation: {
