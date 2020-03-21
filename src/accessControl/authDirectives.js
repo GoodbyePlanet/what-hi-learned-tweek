@@ -5,7 +5,7 @@ const {
 } = require('../../config').get(process.env.NODE_ENV);
 const { createAuthDirectives } = require('gql-auth-directives');
 const { AuthenticationError } = require('../validation/AuthErrors');
-const { verifyAccessToken } = require('./accessControl');
+const { verifyToken } = require('./accessControl');
 
 const authDirectives = createAuthDirectives({
   isAuthenticatedHandler: ({ req }) => {
@@ -17,7 +17,7 @@ const authDirectives = createAuthDirectives({
 
     try {
       const token = authorization.split(' ')[1];
-      const payload = verifyAccessToken(token, accessToken.secret);
+      const payload = verifyToken(token, true);
       req.developerId = payload.id;
     } catch (error) {
       throw new AuthenticationError();

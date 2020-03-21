@@ -111,13 +111,14 @@ const resendActivationToken = async developerId => {
   }
 };
 
-const verifyAccessToken = token => jwt.verify(token, accessToken.secret);
+const verifyToken = (token, isAccessToken) =>
+  jwt.verify(token, isAccessToken ? accessToken.secret : refreshToken.secret);
 
 const isExpired = createdAt =>
   moment.duration(moment().diff(moment(createdAt))).asHours() > 24;
 
-const generateAccessToken = ({ _id, nickName }) =>
-  jwt.sign({ id: _id, nickName }, accessToken.secret, {
+const generateAccessToken = ({ _id }) =>
+  jwt.sign({ id: _id }, accessToken.secret, {
     expiresIn: accessToken.expiresIn,
   });
 
@@ -134,5 +135,6 @@ module.exports = {
   login,
   activateAccount,
   resendActivationToken,
-  verifyAccessToken,
+  verifyToken,
+  generateAccessToken,
 };
