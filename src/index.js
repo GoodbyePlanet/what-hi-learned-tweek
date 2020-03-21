@@ -22,10 +22,6 @@ db.connect();
 
 app.use(cookieParser());
 
-app.get('/', async (_, res) => {
-  res.json({ message: 'THIS IS THE INITAL ROUTE' });
-});
-
 app.post('/refresh-token', (req, res) => {
   const refreshToken = req.cookies['refresh-token'];
 
