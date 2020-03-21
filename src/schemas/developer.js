@@ -1,5 +1,5 @@
 const developerSchema = `
-  directive @isAuthenticated on FIELD | FIELD_DEFINITION | INPUT_FIELD_DEFINITION
+  directive @isAuthenticated on FIELD | FIELD_DEFINITION
 
   type Developer {
     id: ID!
@@ -14,13 +14,13 @@ const developerSchema = `
 
   type Query {
     getDevelopers: [Developer] @isAuthenticated
-    getDeveloperById(id: ID!): Developer
-    findDeveloperByEmail(email: String!): Developer
+    getDeveloperById(id: ID!): Developer @isAuthenticated
+    findDeveloperByEmail(email: String!): Developer @isAuthenticated
   }
 
   type Mutation {
-    updateDeveloper(id: ID!, input: DeveloperInput!): Developer
-    deleteDeveloper(id: ID!): String
+    updateDeveloper(id: ID!, input: DeveloperInput!): Developer @isAuthenticated
+    deleteDeveloper(id: ID!): String @isAuthenticated
   }
 `;
 

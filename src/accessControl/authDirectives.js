@@ -1,8 +1,3 @@
-require('dotenv').config();
-
-const {
-  auth: { accessToken },
-} = require('../../config').get(process.env.NODE_ENV);
 const { createAuthDirectives } = require('gql-auth-directives');
 const { AuthenticationError } = require('../validation/AuthErrors');
 const { verifyToken } = require('./accessControl');
