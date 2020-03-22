@@ -2,6 +2,7 @@ require('dotenv').config();
 
 const express = require('express');
 const cookieParser = require('cookie-parser');
+const helmet = require('helmet');
 const { notFound, errorHandler } = require('./middlewares');
 const {
   app: { port },
@@ -16,10 +17,9 @@ const LOGGER = require('./logger/logger');
 
 const app = express();
 
-// TODO: Check HELMET => https://www.npmjs.com/package/helmet
-
 db.connect();
 
+app.use(helmet());
 app.use(cookieParser());
 
 app.post('/refresh-token', (req, res) => {
