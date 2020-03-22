@@ -4,4 +4,9 @@ const AuthenticationError = createError('AuthenticationError', {
   message: 'Not Authenticated',
 });
 
-module.exports = { AuthenticationError };
+const PermissionError = message =>
+  createError('PermissionError', {
+    message,
+  });
+
+module.exports = { AuthenticationError, PermissionError };

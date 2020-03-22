@@ -13,9 +13,13 @@ const developerResolvers = {
     findDeveloperByEmail: (_, { email }) => findDeveloperByEmail(email),
   },
   Mutation: {
-    updateDeveloper: (_, { id, input: updatedDeveloper }) =>
-      updateDeveloper(id, updatedDeveloper),
-    deleteDeveloper: (_, { id }) => deleteDeveloper(id),
+    updateDeveloper: (
+      _,
+      { id, input: updatedDeveloper },
+      { req: { developerId: loggedInDeveloper } },
+    ) => updateDeveloper(id, updatedDeveloper, loggedInDeveloper),
+    deleteDeveloper: (_, { id }, { req: { developerId: loggedInDeveloper } }) =>
+      deleteDeveloper(id, loggedInDeveloper),
   },
 };
 
