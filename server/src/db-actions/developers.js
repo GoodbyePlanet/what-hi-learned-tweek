@@ -1,5 +1,3 @@
-require('dotenv').config();
-
 const { Developer } = require('../models/Developer');
 const { PermissionError } = require('../validation/AuthErrors');
 

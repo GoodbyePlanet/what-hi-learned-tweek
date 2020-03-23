@@ -26,6 +26,7 @@ app.post('/refresh-token', (req, res) => {
   const refreshToken = req.cookies['refresh-token'];
 
   if (!refreshToken) {
+    LOGGER.info('ERROR');
     res.status(401).send({ ok: false, accessToken: '' });
   }
 

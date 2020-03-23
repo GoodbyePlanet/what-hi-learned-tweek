@@ -2,10 +2,10 @@
 .vscode
 .env
 
-node_modules/
+server/node_modules/
 
-combined.log
-error.log
+server/combined.log
+server/error.log
 
-TODOs.js
-requests.rest
+server/TODOs.js
+server/requests.rest
