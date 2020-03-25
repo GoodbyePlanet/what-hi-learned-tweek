@@ -6,7 +6,8 @@
   "scripts": {
     "start": "node src/index.js",
     "dev": "nodemon src/index.js",
-    "lint": "eslint src/"
+    "lint": "eslint src/",
+    "preinstall": "npx npm-force-resolutions"
   },
   "author": "GoodbyePlanet",
   "license": "ISC",
@@ -14,6 +15,7 @@
     "eslint": "^6.8.0",
     "eslint-config-airbnb-base": "^14.0.0",
     "eslint-plugin-import": "^2.20.1",
+    "minimist": "^1.2.5",
     "nodemon": "^2.0.2",
     "prettier": "1.19.1"
   },
@@ -36,5 +38,8 @@
     "sendgrid": "^5.2.3",
     "shortid": "^2.2.15",
     "winston": "^3.2.1"
+  },
+  "resolutions": {
+    "minimist": "^1.2.5"
   }
 }
