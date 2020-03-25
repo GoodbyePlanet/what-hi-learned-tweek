@@ -18,7 +18,7 @@ const postSchema = `
   }
 
   type Query {
-    getPosts: [Post] @isAuthenticated
+    getPosts: [Post]
     getPostsByAuthor(authorId: ID!): [Post] @isAuthenticated
     getPostByAuthor(authorId: ID!): Post @isAuthenticated
   }
