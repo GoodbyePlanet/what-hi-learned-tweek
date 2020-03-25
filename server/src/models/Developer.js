@@ -18,6 +18,7 @@ const developerSchema = new Schema({
   },
   password: { type: String, required: true },
   nickName: { type: String, required: true },
+  technologies: [{ type: String }],
 });
 
 developerSchema.statics.generateHash = function(password) {

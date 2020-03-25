@@ -5,11 +5,13 @@ const developerSchema = `
     id: ID!
     email: String!
     nickName: String
+    technologies: [String!]
   }
 
   input DeveloperInput {
     email: String!
     nickName: String
+    technologies: [String!]
   }
 
   type Query {
