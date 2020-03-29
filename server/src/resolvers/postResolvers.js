@@ -4,12 +4,14 @@ const {
   updatePost,
   deletePost,
   getPostById,
+  getPostsByAuthor,
 } = require('../db-actions/posts');
 
 const postResolvers = {
   Query: {
     getPosts: () => getPosts(),
     getPostById: (_, { id }) => getPostById(id),
+    getPostsByAuthor: (_, { authorId }) => getPostsByAuthor(authorId),
   },
   Mutation: {
     createPost: (_, { input: postData }) => createPost(postData),
