@@ -19,8 +19,8 @@ const postSchema = `
 
   type Query {
     getPosts: [Post]
+    getPostById(id: ID!): Post @isAuthenticated
     getPostsByAuthor(authorId: ID!): [Post] @isAuthenticated
-    getPostByAuthor(authorId: ID!): Post @isAuthenticated
   }
 
   type Mutation {
