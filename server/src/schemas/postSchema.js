@@ -10,8 +10,8 @@ const postSchema = `
     createdAt: String
   }
 
-  type PostInput {
-    author: Developer!
+  input PostInput {
+    author: ID!
     title: String!
     body: String!
     tags: [String!]
@@ -25,6 +25,8 @@ const postSchema = `
 
   type Mutation {
     createPost(input: PostInput!): Post @isAuthenticated
+    updatePost(id: ID!, input: PostInput!): Post @isAuthenticated
   }
-
 `;
+
+module.exports = postSchema;
