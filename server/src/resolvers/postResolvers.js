@@ -1,4 +1,9 @@
-const { getPosts, createPost, updatePost } = require('../db-actions/posts');
+const {
+  getPosts,
+  createPost,
+  updatePost,
+  deletePost,
+} = require('../db-actions/posts');
 
 const postResolvers = {
   Query: {
@@ -11,6 +16,8 @@ const postResolvers = {
       { id, input: updatedPostData },
       { req: { developerId: loggedInDeveloper } },
     ) => updatePost(id, updatedPostData, loggedInDeveloper),
+    deletePost: (_, { id }, { req: { developerId: loggedInDeveloper } }) =>
+      deletePost(id, loggedInDeveloper),
   },
 };
 

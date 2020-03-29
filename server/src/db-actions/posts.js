@@ -37,8 +37,28 @@ const updatePost = async (id, updatedPost, loggedInDeveloper) => {
   }
 };
 
+const deletePost = async (id, loggedInDeveloper) => {
+  try {
+    const post = await Post.findById(id);
+
+    if (post.author._id.toString() !== loggedInDeveloper) {
+      const Error = PermissionError('Not permitted to delete resource!');
+      throw new Error();
+    }
+
+    return (await Post.findByIdAndRemove(id, {
+      useFindAndModify: false,
+    }))
+      ? id
+      : new Error(`Delete failed, ${id} not found!`);
+  } catch (error) {
+    LOGGER.error('Error while deleting post', error);
+  }
+};
+
 module.exports = {
   getPosts,
   createPost,
   updatePost,
+  deletePost,
 };
