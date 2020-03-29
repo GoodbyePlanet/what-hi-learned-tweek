@@ -56,9 +56,13 @@ const deletePost = async (id, loggedInDeveloper) => {
   }
 };
 
+const getPostById = async id =>
+  await Post.findById(id).orFail(new Error(`Post with ${id} not found!`));
+
 module.exports = {
   getPosts,
   createPost,
   updatePost,
   deletePost,
+  getPostById,
 };
