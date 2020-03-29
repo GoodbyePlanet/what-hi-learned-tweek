@@ -26,6 +26,7 @@ const postSchema = `
   type Mutation {
     createPost(input: PostInput!): Post @isAuthenticated
     updatePost(id: ID!, input: PostInput!): Post @isAuthenticated
+    deletePost(id: ID!): String @isAuthenticated
   }
 `;
 
