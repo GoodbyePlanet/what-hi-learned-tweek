@@ -60,11 +60,9 @@ const getPostById = async id =>
   await Post.findById(id).orFail(new Error(`Post with ${id} not found!`));
 
 const getPostsByAuthor = async authorId => {
-  const posts = await Post.find({ 'author._id': authorId }).orFail(
+  return await Post.find({ 'author._id': authorId }).orFail(
     `No post for author with id ${authorId}`,
   );
-
-  return posts;
 };
 
 module.exports = {
