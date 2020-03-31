@@ -1,0 +1,11 @@
+version: "3"
+services: 
+  api:
+    build:
+      context: ../
+    image: node-img:0.1
+    container_name: graphql-app
+    ports:
+      - "3111:3111"
+    env_file: 
+      - ../../.env
