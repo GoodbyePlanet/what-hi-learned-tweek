@@ -1,8 +1,9 @@
 require('dotenv').config();
 
-const LOGGER = require('../logger/logger');
+/* eslint import/order: "off" */
 const config = require('../../config').get(process.env.NODE_ENV);
 const sendGridEmail = require('sendgrid')(config.sendGrid.apiKey);
+const LOGGER = require('../logger/logger');
 const confirmationEmailTemplate = require('./template');
 
 const createEmailRequest = (to, activationCode, isResend) => {
@@ -40,14 +41,9 @@ const createEmailRequest = (to, activationCode, isResend) => {
 const sendEmail = (email, activaitonCode, isResend) =>
   sendGridEmail
     .API(createEmailRequest(email, activaitonCode, isResend))
-    .then(response =>
-      LOGGER.info('Successfully sent registration email', response),
-    )
+    .then(response => LOGGER.info('Successfully sent registration email', response))
     .catch(error =>
-      LOGGER.error(
-        'An error has occurred while sending an email',
-        error.response,
-      ),
+      LOGGER.error('An error has occurred while sending an email', error.response),
     );
 
 module.exports = sendEmail;

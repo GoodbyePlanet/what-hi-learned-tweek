@@ -3,7 +3,7 @@ const { Developer } = require('../models/Developer');
 const { PermissionError } = require('../validation/AuthErrors');
 const LOGGER = require('../logger/logger');
 
-const getPosts = async () => await Post.find({});
+const getPosts = async () => Post.find({});
 
 const createPost = async postData => {
   try {
@@ -57,10 +57,10 @@ const deletePost = async (id, loggedInDeveloper) => {
 };
 
 const getPostById = async id =>
-  await Post.findById(id).orFail(new Error(`Post with ${id} not found!`));
+  Post.findById(id).orFail(new Error(`Post with ${id} not found!`));
 
 const getPostsByAuthor = async authorId => {
-  return await Post.find({ 'author._id': authorId }).orFail(
+  return Post.find({ 'author._id': authorId }).orFail(
     `No post for author with id ${authorId}`,
   );
 };

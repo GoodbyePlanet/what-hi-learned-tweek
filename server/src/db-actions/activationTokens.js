@@ -16,7 +16,7 @@ const createActivationToken = async developer => {
 };
 
 const redeemeActivationToken = async id =>
-  await ActivationToken.findByIdAndUpdate(
+  ActivationToken.findByIdAndUpdate(
     id,
     {
       redeemed: true,
@@ -25,7 +25,7 @@ const redeemeActivationToken = async id =>
   );
 
 const invalidateActivationToken = async id =>
-  await ActivationToken.findByIdAndUpdate(
+  ActivationToken.findByIdAndUpdate(
     id,
     {
       invalidated: true,
@@ -34,12 +34,12 @@ const invalidateActivationToken = async id =>
   );
 
 const getActivationToken = async developerId =>
-  await ActivationToken.findOne({
+  ActivationToken.findOne({
     'developer._id': developerId,
   });
 
 const getNotRedeemedAndNotInvalidatedTokenByDeveloperId = async developerId =>
-  await ActivationToken.findOne({
+  ActivationToken.findOne({
     'developer._id': developerId,
     redeemed: { $eq: false },
     invalidated: { $eq: false },

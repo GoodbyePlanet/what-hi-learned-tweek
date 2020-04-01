@@ -19,9 +19,6 @@ const activationTokenSchema = Schema(
   },
 );
 
-const ActivationToken = mongoose.model(
-  'ActivationToken',
-  activationTokenSchema,
-);
+const ActivationToken = mongoose.model('ActivationToken', activationTokenSchema);
 
 module.exports = ActivationToken;

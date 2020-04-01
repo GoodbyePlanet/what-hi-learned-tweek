@@ -2,24 +2,21 @@ const { Developer } = require('../models/Developer');
 const { PermissionError } = require('../validation/AuthErrors');
 
 const getDevelopers = async () =>
-  await Developer.find({}).orFail(new Error('No documents found'));
+  Developer.find({}).orFail(new Error('No documents found'));
 
 const getDeveloperById = async id =>
-  await Developer.findById(id).orFail(
-    new Error(`Developer with ${id} not found!`),
-  );
+  Developer.findById(id).orFail(new Error(`Developer with ${id} not found!`));
 
-const findDeveloperByEmail = async email => await Developer.findOne({ email });
+const findDeveloperByEmail = async email => Developer.findOne({ email });
 
-const createDeveloper = async developerData =>
-  await new Developer(developerData).save();
+const createDeveloper = async developerData => new Developer(developerData).save();
 
 const updateDeveloper = async (id, updatedDeveloper, loggedInDeveloper) => {
   if (id !== loggedInDeveloper) {
     const Error = PermissionError('Not permitted to update resource!');
     throw new Error();
   }
-  return await Developer.findByIdAndUpdate(
+  return Developer.findByIdAndUpdate(
     id,
     { ...updatedDeveloper },
     {

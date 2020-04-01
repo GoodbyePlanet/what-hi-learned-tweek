@@ -35,10 +35,7 @@ developerSchema.path('password').validate(function(password) {
 });
 
 developerSchema.pre('save', function(next) {
-  this.password = bcrypt.hashSync(
-    this.password,
-    bcrypt.genSaltSync(SALT_WORK_FACTOR),
-  );
+  this.password = bcrypt.hashSync(this.password, bcrypt.genSaltSync(SALT_WORK_FACTOR));
   next();
 });
 

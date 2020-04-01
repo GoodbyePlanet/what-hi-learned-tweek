@@ -4,7 +4,7 @@ const { verifyToken } = require('./accessControl');
 
 const authDirectives = createAuthDirectives({
   isAuthenticatedHandler: ({ req }) => {
-    const authorization = req.headers['authorization'];
+    const { authorization } = req.headers;
 
     if (!authorization) {
       throw new AuthenticationError();

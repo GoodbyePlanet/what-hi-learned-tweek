@@ -12,6 +12,7 @@ const {
 const {
   findDeveloperByEmail,
   createDeveloper,
+  getDeveloperById,
 } = require('../db-actions/developers');
 const {
   auth: { accessToken, refreshToken },
@@ -19,12 +20,29 @@ const {
 const sendEmail = require('../email/sendEmail');
 const LOGGER = require('../logger/logger');
 
+const verifyToken = (token, isAccessToken) =>
+  jwt.verify(token, isAccessToken ? accessToken.secret : refreshToken.secret);
+
+const isExpired = createdAt =>
+  moment.duration(moment().diff(moment(createdAt))).asHours() > 24;
+
+const generateAccessToken = ({ _id }) =>
+  jwt.sign({ id: _id }, accessToken.secret, {
+    expiresIn: accessToken.expiresIn,
+  });
+
+const generateRefreshToken = ({ _id }) =>
+  jwt.sign({ id: _id }, refreshToken.secret, {
+    expiresIn: refreshToken.expiresIn,
+  });
+
+const generateExpirationDate = (multiplier, miliseconds) =>
+  new Date(Date.now() + multiplier * miliseconds);
+
 const register = async developerData => {
   try {
     if (await findDeveloperByEmail(developerData.email)) {
-      throw Error(
-        `Developer with email: ${developerData.email} already exists!`,
-      );
+      throw Error(`Developer with email: ${developerData.email} already exists!`);
     }
 
     const createdDeveloper = await createDeveloper({
@@ -46,8 +64,7 @@ const register = async developerData => {
 
 const login = async (email, password, res) => {
   const developer = await findDeveloperByEmail(email);
-  const validPassword =
-    developer && (await developer.isValidPassword(password));
+  const validPassword = developer && (await developer.isValidPassword(password));
 
   if (developer && validPassword) {
     const token = generateAccessToken(developer);
@@ -74,9 +91,7 @@ const activateAccount = async (token, developerId) => {
     const activationToken = await getNotRedeemedAndNotInvalidatedTokenByDeveloperId(
       developerId,
     );
-    const isTokenExpired = isExpired(
-      activationToken && activationToken.createdAt,
-    );
+    const isTokenExpired = isExpired(activationToken && activationToken.createdAt);
 
     if (activationToken && token === activationToken.token && !isTokenExpired) {
       await redeemeActivationToken(activationToken._id);
@@ -110,25 +125,6 @@ const resendActivationToken = async developerId => {
     LOGGER.error('Resend Activation Token failed', error);
   }
 };
-
-const verifyToken = (token, isAccessToken) =>
-  jwt.verify(token, isAccessToken ? accessToken.secret : refreshToken.secret);
-
-const isExpired = createdAt =>
-  moment.duration(moment().diff(moment(createdAt))).asHours() > 24;
-
-const generateAccessToken = ({ _id }) =>
-  jwt.sign({ id: _id }, accessToken.secret, {
-    expiresIn: accessToken.expiresIn,
-  });
-
-const generateRefreshToken = ({ _id }) =>
-  jwt.sign({ id: _id }, refreshToken.secret, {
-    expiresIn: refreshToken.expiresIn,
-  });
-
-const generateExpirationDate = (multiplier, miliseconds) =>
-  new Date(Date.now() + multiplier * miliseconds);
 
 module.exports = {
   register,

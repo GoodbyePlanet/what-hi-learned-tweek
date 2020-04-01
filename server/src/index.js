@@ -9,10 +9,7 @@ const {
 } = require('../config').get(process.env.NODE_ENV);
 const db = require('./db');
 const apolloServer = require('./graphqlRoute');
-const {
-  verifyToken,
-  generateAccessToken,
-} = require('./accessControl/accessControl');
+const { verifyToken, generateAccessToken } = require('./accessControl/accessControl');
 const LOGGER = require('./logger/logger');
 
 const app = express();
@@ -49,8 +46,6 @@ app.use(errorHandler);
 
 db.connection.on('connected', () => {
   app.listen(port, () =>
-    console.log(
-      `Listening at http://localhost:${port}${apolloServer.graphqlPath}`,
-    ),
+    console.log(`Listening at http://localhost:${port}${apolloServer.graphqlPath}`),
   );
 });

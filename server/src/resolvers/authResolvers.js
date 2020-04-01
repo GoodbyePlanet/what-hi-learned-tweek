@@ -12,8 +12,7 @@ const authResolvers = {
     login: (_, { email, password }, { res }) => login(email, password, res),
     activateAccount: (_, { activationToken, developerId }) =>
       activateAccount(activationToken, developerId),
-    resendActivationToken: (_, { developerId }) =>
-      resendActivationToken(developerId),
+    resendActivationToken: (_, { developerId }) => resendActivationToken(developerId),
   },
 };
 
