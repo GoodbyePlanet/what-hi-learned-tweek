@@ -1,0 +1,3 @@
+##### WHAT HAVE I LEARNED THIS WEEK
+
+##### README => more details soon...
