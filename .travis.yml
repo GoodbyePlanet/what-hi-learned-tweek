@@ -12,3 +12,5 @@ script:
 
 notifications:
   email: false
+on:
+  branch: master
