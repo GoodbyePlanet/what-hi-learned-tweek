@@ -10,7 +10,16 @@
     "preinstall": "npx npm-force-resolutions"
   },
   "author": "GoodbyePlanet",
-  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/GoodbyePlanet/what-hi-learned-tweek.git"
+  },
+  "keywords": [
+    "graphql",
+    "nodejs",
+    "javascript"
+  ],
+  "license": "ISC",
   "devDependencies": {
     "eslint": "^6.8.0",
     "eslint-config-airbnb-base": "^14.0.0",
