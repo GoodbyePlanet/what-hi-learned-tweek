@@ -7,8 +7,8 @@ node_js:
 before_install:
   - cd ${TRAVIS_BUILD_DIR}/server
 
-install:
-  - npm ci
+script:
+  - npm run lint
 
 notifications:
   email: false
