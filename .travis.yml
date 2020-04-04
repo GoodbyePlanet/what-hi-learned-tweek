@@ -4,6 +4,8 @@ language: node_js
 node_js:
   - 12.10.0
 
+cache: npm
+
 before_install:
   - cd ${TRAVIS_BUILD_DIR}/server
 
